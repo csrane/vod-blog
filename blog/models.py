@@ -1,5 +1,6 @@
 import re
 from django import forms
+from django.conf import settings
 from django.db import models
 
 
@@ -16,19 +17,30 @@ class Post(models.Model):
     is_public = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
         return self.title
-
+    
+    def get_absolute_url(self):
+        return reverse('blog:post_detail', args=[self.pk])
+    
     @property
     def lng(self):
-        if self.lnglat :
+        if self.lnglat:
             return self.lnglat.split(',')[0]
         return None
-
+    
     @property
     def lat(self):
-        if self.lnglat :
+        if self.lnglat:
             return self.lnglat.split(',')[1]
         return None
-        
+
+
+class Comment(models.Model):
+    # Post : Comment = 1 : N
+    post = models.ForeignKey(Post)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

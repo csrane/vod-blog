@@ -57,6 +57,7 @@ $(function(){
                 </div>
                 <div class="card-footer">
                     <a href="{% url "blog:index" %}" class="btn btn-primary">목록으로</a>
+                    <a href="{% url "blog:comment_new" post.pk %}" class="btn btn-info">댓글쓰기</a>
                 </div>
             </div>           
         </div>
